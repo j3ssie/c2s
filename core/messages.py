@@ -15,7 +15,7 @@ class Messages(object):
     def send_message(self):
         pass
 
-    def send_info(self):
+    def send_info(self, mess):
         mess['color'] = '#005b9f'
         mess['icon'] = utils.get_emoji()
         self.send_attachment(mess)
@@ -27,7 +27,7 @@ class Messages(object):
         self.send_attachment(mess)
 
 
-    def send_bad(self):
+    def send_bad(self, mess):
         mess['color'] = '#c62828'
         mess['icon'] = 'https://emoji.slack-edge.com/TC2BSM362/jemoji3/9d4b76412c4c1e1a.png'
         self.send_attachment(mess)

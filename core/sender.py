@@ -1,3 +1,6 @@
+'''
+Sending HTTP stuff
+'''
 import requests
 
 def send_GET(url, token):

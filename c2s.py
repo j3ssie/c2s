@@ -3,6 +3,9 @@
 import os, sys, glob
 import argparse, configparser
 from pprint import pprint
+import threading
+import datetime
+import queue
 
 from core import messages
 from core import searching
@@ -82,13 +85,15 @@ def config_parser(config_file):
     options['control_bot'] = config['bots']['control']
     # options['bots'] = config['bots']['collector']
 
-
-
     #channels stuff
     options['status_channel'] = config['channels']['status']
+    options['status_channel_name'] = config['channels']['status_name']
+
     options['irc_channel'] = config['channels']['irc']
     options['irc_channel_name'] = config['channels']['irc_name']
+
     options['report_channel'] = config['channels']['report']
+    options['report_channel_name'] = config['channels']['report_name']
 
 def daemon():
     pass
@@ -111,7 +116,7 @@ def parsing_argument(args):
     # mess['filename'] = '/tmp/ibm.txt'
     # sm.send_file(mess)
 
-    search.search('hello')
+    search.search_cmd()
 
 
 

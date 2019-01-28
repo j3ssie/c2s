@@ -7,3 +7,6 @@ core/__pycache__/
 #local config file
 config.conf
 
+#just for testing
+testing.py
+workers.py
