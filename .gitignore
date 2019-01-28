@@ -1,0 +1,9 @@
+.DS_STORE
+
+#
+__pycache__/
+core/__pycache__/
+
+#local config file
+config.conf
+
