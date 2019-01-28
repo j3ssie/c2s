@@ -5,6 +5,7 @@ import argparse, configparser
 from pprint import pprint
 
 from core import messages
+from core import searching
 
 # Console colors
 W = '\033[1;0m'   # white 
@@ -51,8 +52,11 @@ options = {
     'local_name' : '',
 
     'irc_channel' : '',
+    'irc_channel_name' : '',
     'status_channel' : '',
     'report_channel' : '',
+
+    'control_bot' : '',
 
 }
 
@@ -63,6 +67,7 @@ mess = {
     'title' : '',
     'filename' : '',
     'style' : '',
+    'comment' : '',
 }
 
 #
@@ -71,15 +76,18 @@ def config_parser(config_file):
     config.read(config_file)
 
     options['sender_token'] = config['configs']['sender_token']
+    options['user_token'] = config['configs']['user_token']
     options['local_name'] = config['configs']['local_name']
 
-    options['bots'] = config['bots']['collector']
+    options['control_bot'] = config['bots']['control']
+    # options['bots'] = config['bots']['collector']
 
 
 
     #channels stuff
     options['status_channel'] = config['channels']['status']
     options['irc_channel'] = config['channels']['irc']
+    options['irc_channel_name'] = config['channels']['irc_name']
     options['report_channel'] = config['channels']['report']
 
 def daemon():
@@ -93,14 +101,17 @@ def parsing_argument(args):
 
     # daemon()
     sm = messages.Messages(options)
+    search = searching.Searching(options)
 
-    mess['title'] = 'Testing #1'
-    mess['content'] = 'fool me'
-    sm.send_good(mess)
+    # mess['title'] = 'Testing #1'
+    # mess['content'] = 'fool me'
+    # sm.send_good(mess)
 
 
-    mess['filename'] = '/tmp/ibm.txt'
-    sm.send_file(mess)
+    # mess['filename'] = '/tmp/ibm.txt'
+    # sm.send_file(mess)
+
+    search.search('hello')
 
 
 
@@ -115,9 +126,9 @@ def main():
     parser = argparse.ArgumentParser(description="Comand and Control on Slack")
 
     parser.add_argument('-c','--config' , action='store', dest='config', help='config file', default='config.conf')
-    parser.add_argument('-t','--target' , action='store', dest='target', help='target')
-    parser.add_argument('-T','--target_list' , action='store', dest='target_list', help='list of target')
-    parser.add_argument('-o','--output' , action='store', dest='output', help='output')
+    parser.add_argument('-m','--mode' , action='store', dest='mode', help='Choose mode to run')
+    # parser.add_argument('-T','--target_list' , action='store', dest='target_list', help='list of target')
+    # parser.add_argument('-o','--output' , action='store', dest='output', help='output')
     parser.add_argument('--update', action='store_true', help='update lastest from git')
 
     args = parser.parse_args()

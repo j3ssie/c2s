@@ -1,7 +1,6 @@
 import requests
 
 def send_GET(url, token):
-    # url = "https://slack.com:443/api/search.messages?query=@UFR8A7CJ3&count=100&page=1&pretty=1"
     headers = {"Authorization": "Bearer " + token, "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8", "Accept-Language": "en-US,en;q=0.5", "Accept-Encoding": "gzip, deflate", "Connection": "close"}
 
     r = requests.get(url, headers=headers)
