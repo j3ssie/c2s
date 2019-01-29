@@ -10,6 +10,7 @@ from . import utils
 from . import execute
 
 
+
 class Searching():
     """docstring for Searching"""
     def __init__(self, options):
@@ -27,66 +28,82 @@ class Searching():
             utils.print_bad("No message matched ...")
             return
 
-        utils.print_good("Finding IRC messages")
         matches = data['messages']['matches']
 
         #found irc message
         for item in matches:
             content = item['text']
-            utils.print_good("Cheking these message: {0}".format(content))
             #check if the message was a c2 syntax
             if self.options['control_bot'] in content:
                 if utils.check_c2_systax(content):
+                    utils.print_info("Cheking these message: {0}".format(content))
                     cmd, out, nid = utils.check_c2_systax(content)
                     #check duplicate and run it
-                    self.process_irc_message(cmd, out)
+                    self.process_irc_message(cmd, out, nid)
 
 
 
     def process_irc_message(self, cmd, out, nid):
-        #check if duplicate or not
-        status_channel = self.options['status_channel_name']
-        query = "{0} in:{1}".format(cmd, status_channel)
-        data = self.custom_search(query)
-        total = data['messages']['total']
+        # #check if duplicate or not
+        # utils.print_info("Cheking these command: {0}".format(cmd))
+        if self.checking_status(cmd):
+            # print('== Gonna execute it ---')
+            process_item = {
+                'cmd' : cmd,
+                'out' : out,
+                'nid' : nid
+            }
+            #put the process to a queue
+            self.options['process_queue'].put_cmd_to_queue(process_item)
 
-        if total == 0:
-            #decode HTML to raw command
-            cmd = html.unescape(cmd)
+
+            #create a status
             if out != '':
-                #create a status
                 sm = messages.Messages(self.options)
                 mess = {
                     'title' : 'Execute Command with output',
-                    'content' : cmd
+                    # 'author_name' : out,
+                    'content' : cmd + "\n" + out
                 }
                 sm.send_good(mess)
                 utils.print_good('Execute Command with output: {0}'.format(cmd))
-                #execute cmd
-                #create snippet message with output file
-
 
             else:
-                #create a status
                 sm = messages.Messages(self.options)
-
                 mess = {
                     'title' : 'Execute Command',
-                    'filename' : cmd
+                    'content' : cmd
                 }
-
                 sm.send_good(mess)
-
-                #execute cmd
                 utils.print_good('Execute Command: {0}'.format(cmd))
-                execute.run_as_background(cmd)
 
-                #create attach message with output
-                
+            
+    def checking_status(self, cmd):
+        #check if duplicate or not
+        status_channel = self.options['status_channel_name']
+        query = "Execute Command in:{1}".format(cmd, status_channel)
+        data = self.custom_search(query)
+        total = data['messages']['total']
 
+        # print(total)
+
+        if total > 0:
+            matches = data['messages']['matches']
+            for item in matches:
+                if 'attachments' in item.keys():
+                    try:
+                        #need to check for page
+                        if html.unescape(item['attachments'][0]['text']) == cmd:
+                            return False
+                    except:
+                        pass
+
+            return True
+
+        return True
 
     ####really search
-    def custom_search(self,query):
+    def custom_search(self, query):
         data = self.search_message(query=query)
         return data
 

@@ -51,6 +51,10 @@ class Messages(object):
 
         #message stuff
         channel = self.options['status_channel']
+
+        
+        author_name = utils.get_value(mess, 'author_name')
+        
         title = mess['title']
         content = mess['content']
         color = mess['color']
@@ -61,6 +65,7 @@ class Messages(object):
             "channel": channel,
             "attachments": [
                 {
+                    "author_name": author_name,
                     "fallback": title,
                     "title": title,
                     "text": content,
@@ -82,8 +87,8 @@ class Messages(object):
         channel = self.options['report_channel']
         title = mess['title']
         filename = mess['filename']
-        style = mess['style']
-        comment = mess['comment']
+        style = utils.get_value(mess, 'style', 'plaintext')
+        comment = utils.get_value(mess, 'comment', '')
         content = mess['content']
 
         url = "https://slack.com:443/api/files.upload?channels={0}&title={1}&filename={2}&filetype={3}&initial_comment={4}&pretty=1".format(channel, title, filename, style, comment)

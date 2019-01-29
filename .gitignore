@@ -8,5 +8,6 @@ core/__pycache__/
 config.conf
 
 #just for testing
+core/testing.py
 testing.py
 workers.py

@@ -1,6 +1,8 @@
+import os
+import subprocess
 import time
 import random
-import os
+import html
 
 # Console colors
 W = '\033[1;0m'   # white 
@@ -23,6 +25,13 @@ good = '{0}[+]{1} '.format(G,GR)
 def get_ts():
     return int(time.time())
 
+def get_value(mess, value, default=''):
+    try:
+        return mess[value]
+    except:
+        return default
+
+
 def get_emoji():
     emojis = [
         'https://emoji.slack-edge.com/TC2BSM362/jemoji1/164b2f1f9acbaeba.png',
@@ -37,21 +46,24 @@ def check_c2_systax(content):
     nid = ''
     out = ''
 
-    if '#cmd' in content:
+    if '#cmd' in html.unescape(content):
         if '#out' in content and '#nid' in content:
             cmd = content.split('#cmd ')[1].split(' #out ')[0]
-            out = content.split('#cmd ')[1].split(' #out ')[1]
-            return cmd, out, nid
-            
-        if '#out' in content and '#nid' not in content:
+            out = content.split('#cmd ')[1].split(' #out ')[1].split(' #nid ')[0]
+            nid = content.split('#cmd ')[1].split(' #out ')[1].split(' #nid ')[1]
+
+        elif '#out' in content and '#nid' not in content:
             cmd = content.split('#cmd ')[1].split(' #out ')[0]
             out = content.split('#cmd ')[1].split(' #out ')[1]
-            return cmd, out, nid
+
         else:
             cmd = content.split("#cmd ")[1]
-            return cmd, out, nid
 
+    return html.unescape(cmd), html.unescape(out), html.unescape(nid)
 
+def run_as_background(command):
+    process = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+    return process
 
 def print_banner(text):
     print('{1}--~~~=:>[ {2}{0}{1} ]>'.format(text, G, C))
@@ -71,3 +83,6 @@ def print_bad(text):
 def check_output(options, raw_output):
     output = replace_argument(options, raw_output)
     print('{1}--==[ Check the output: {2}{0}'.format(output, G, P))
+
+
+
