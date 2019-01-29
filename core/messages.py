@@ -50,7 +50,7 @@ class Messages(object):
         name = self.options['local_name']
 
         #message stuff
-        channel = self.options['status_channel']
+        channel = utils.get_value(mess, 'channel', self.options['status_channel'])
 
         
         author_name = utils.get_value(mess, 'author_name')

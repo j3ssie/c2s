@@ -12,8 +12,6 @@ from core import searching
 from core import execute
 from core import utils
 
-from core import testing
-
 # Console colors
 W = '\033[1;0m'   # white 
 R = '\033[1;31m'  # red

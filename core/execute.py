@@ -72,6 +72,7 @@ class ProcessQueue():
             output = process_item['process'].stdout.read().decode("utf-8")
             sm = messages.Messages(self.options)
             mess = {
+                'channel' : 'CFSTHB3K9',
                 'author_name' : 'Command Done',
                 'title' : process_item['cmd'],
                 'content' : output

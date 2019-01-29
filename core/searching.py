@@ -47,7 +47,6 @@ class Searching():
         # #check if duplicate or not
         # utils.print_info("Cheking these command: {0}".format(cmd))
         if self.checking_status(cmd):
-            # print('== Gonna execute it ---')
             process_item = {
                 'cmd' : cmd,
                 'out' : out,
