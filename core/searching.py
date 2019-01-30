@@ -92,7 +92,9 @@ class Searching():
                 if 'attachments' in item.keys():
                     try:
                         #need to check for page
-                        if html.unescape(item['attachments'][0]['text']) == cmd:
+                        mess_content = html.unescape(item['attachments'][0]['text'])
+                        if cmd in mess_content:
+                            # print(mess_content)
                             return False
                     except:
                         pass

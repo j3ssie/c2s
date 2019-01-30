@@ -117,6 +117,9 @@ def pull_irc():
     while True:
         utils.print_good("Finding IRC messages")
         search.search_cmd()
+        
+        #Slack API some how delay the result, so you can only get the lastest message about 30s-45s
+        utils.print_info("Waiting 45s to next sync")
         time.sleep(45)
 
 
@@ -149,7 +152,8 @@ def parsing_argument(args):
 
 
 def update():
-    pass
+    utils.run1('git fetch --all && git reset --hard origin/master')
+    sys.exit(0)
 
 
 def main():
