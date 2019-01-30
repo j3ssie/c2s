@@ -3,7 +3,7 @@ C2S
 Command and Control server on Slack
 
 # What is C2S?
-C2S allows you to build a simple Command and Control server using only and only Slack
+C2S allows you to build a simple Command and Control server using only and only Slack without any extra server or anything.
 
 # Installation
 ```
@@ -12,10 +12,6 @@ pip3 install requests
 
 The rest of installation focus config on Slack workspace settings so please follow the [wiki page](https://github.com/j3ssie/c2s/wiki).
 
-If you familiar with Slack just change the config in template config file and run command below 
-```
-mv template-config.conf config.conf
-```
 
 # How to use
 Just type the command below and do the rest on your slack workspace
